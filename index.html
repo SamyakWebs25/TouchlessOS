@@ -272,7 +272,6 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.1);
         }
 
-        // Voice AI Synthesizer
         function speak(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -406,7 +405,8 @@
         }
 
         const hands = new Hands({locateFile: (f) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}`});
-        hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.6, minTrackingConfidence: 0.6 });
+        // Upgraded confidence values to filter out background crowd movement and interference
+        hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.75, minTrackingConfidence: 0.75 });
         hands.onResults(onResults);
         const camera = new Camera(videoElement, { onFrame: async () => await hands.send({image: videoElement}), width: 640, height: 480 });
         camera.start();
